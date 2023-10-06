@@ -1,5 +1,5 @@
-[![CodeQL](https://github.com/THE-ASSASSIN0128/Feather/actions/workflows/codeql.yml/badge.svg?branch=master)](https://github.com/THE-ASSASSIN0128/Feather/actions/workflows/codeql.yml)
-[![Dependency Review](https://github.com/THE-ASSASSIN0128/Feather/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/THE-ASSASSIN0128/Feather/actions/workflows/dependency-review.yml)
+[![CodeQL](https://github.com/theassassin0128/Feather/actions/workflows/codeql.yml/badge.svg)](https://github.com/theassassin0128/Feather/actions/workflows/codeql.yml)
+[![Dependency Review](https://github.com/theassassin0128/Feather/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/theassassin0128/Feather/actions/workflows/dependency-review.yml)
 
 # FEATHER
 
