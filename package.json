@@ -13,7 +13,7 @@
     "bot"
   ],
   "author": "theassassin0128",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "ascii-table": "^0.0.9",
     "distube": "^4.0.6",
