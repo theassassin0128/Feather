@@ -27,7 +27,6 @@ module.exports = {
         .setDescription("Select a Guild Member.")
         .setRequired(false)
     ),
-  test: true,
   /**
    *
    * @param {ChatInputCommandInteraction} interaction

@@ -14,7 +14,6 @@ module.exports = {
     .setName("invite")
     .setDescription("Replies with a list of my invite links.")
     .setDMPermission(false),
-  test: true,
   /**
    *
    * @param {ChatInputCommandInteraction} interaction

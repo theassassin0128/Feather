@@ -11,7 +11,6 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("botinfo")
     .setDescription("Replies with current stats of the bot."),
-  test: true,
   /**
    *
    * @param {ChatInputCommandInteraction} interaction
