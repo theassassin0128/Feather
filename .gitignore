@@ -1,3 +1,5 @@
 node_modules
 .env
 tools
+.replit
+replit.nix
