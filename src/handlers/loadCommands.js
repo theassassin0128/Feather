@@ -1,39 +1,35 @@
-const { TEST_SERVER_ID, MAIN_SERVER_ID, BOT_ID, DISCORD_TOKEN } = process.env;
-const { Client, REST, Routes } = require("discord.js");
+const { TEST_SERVER_ID, BOT_ID, DISCORD_TOKEN } = process.env;
+const { REST, Routes } = require("discord.js");
 const rest = new REST({ version: "10" }).setToken(DISCORD_TOKEN);
-const { glob } = require("glob");
-const path = require("path");
-const ascii = require("ascii-table");
+const { loadFiles } = require("../functions/loadFiles");
 
-/**
- *
- * @param {Client} client
- * @returns
- */
 async function loadCommands(client) {
-  const table = new ascii("BOT COMMNDS").setHeading("files", "status");
-  const applicationGuildCommands = [];
-  const applicationCommands = [];
+  console.time("Load Time");
+  client.commands = new Map();
+  const commands = new Array();
+  const applicationGuildCommands = new Array();
+  const applicationCommands = new Array();
 
-  const files = await glob(
-    path.join(`${process.cwd()}`, "src/commands", "**/*.js").replace(/\\/g, "/")
-  );
+  const files = await loadFiles("src/commands");
 
   for (const file of files) {
     try {
       const commandObject = require(file);
 
       client.commands.set(commandObject.data.name, commandObject);
+      commands.push({
+        Commands: file.split("/").pop().slice(0, -3) + ".js",
+        Status: "✅️",
+      });
 
-      if (commandObject.test) {
-        applicationGuildCommands.push(commandObject.data);
-      } else {
-        applicationCommands.push(commandObject.data);
-      }
-
-      table.addRow(file.split("/").pop(), "✅️");
+      if (commandObject.test) applicationGuildCommands.push(commandObject.data);
+      else applicationCommands.push(commandObject.data);
     } catch (error) {
-      table.addRow(file.split("/").pop(), `❌️: ${error}`);
+      commands.push({
+        Command: file.split("/").pop().slice(0, -3),
+        Status: "❌️",
+      });
+      console.error(error);
     }
   }
 
@@ -44,7 +40,8 @@ async function loadCommands(client) {
     body: applicationCommands,
   });
 
-  return console.log(table.toString());
+  console.table(commands, ["Commands", "Status"]);
+  console.timeEnd("Load Time");
 }
 
 module.exports = { loadCommands };
