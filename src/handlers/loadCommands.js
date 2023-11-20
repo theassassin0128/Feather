@@ -18,17 +18,17 @@ async function loadCommands(client) {
 
       client.commands.set(commandObject.data.name, commandObject);
       commands.push({
-        Commands: file.split("/").pop().slice(0, -3) + ".js",
+        Commands: file.split("\\").pop().slice(0, -3) + ".js",
         Status: "✅️",
-      });
+      }); //Replace "\\" with "/" if you are using mac/linux
 
       if (commandObject.test) applicationGuildCommands.push(commandObject.data);
       else applicationCommands.push(commandObject.data);
     } catch (error) {
       commands.push({
-        Command: file.split("/").pop().slice(0, -3),
+        Commands: file.split("\\").pop().slice(0, -3) + ".js",
         Status: "❌️",
-      });
+      }); //Replace "\\" with "/" if you are using mac/linux
       console.error(error);
     }
   }

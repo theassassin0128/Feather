@@ -17,14 +17,14 @@ async function loadEvents(client) {
       client.events.set(eventObject.name, execute);
 
       events.push({
-        Events: file.split("/").pop().slice(0, -3) + ".js",
+        Events: file.split("\\").pop().slice(0, -3) + ".js",
         Status: "✅️",
-      });
+      }); //Replace "\\" with "/" if you are using mac/linux
     } catch (error) {
       events.push({
-        Command: file.split("/").pop().slice(0, -3),
+        Events: file.split("\\").pop().slice(0, -3) + ".js",
         Status: "❌️",
-      });
+      }); //Replace "\\" with "/" if you are using mac/linux
       console.error(error);
     }
   }
