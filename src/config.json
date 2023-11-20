@@ -2,7 +2,8 @@
   "colours": {
     "main": "FF8C00",
     "error": "FF0000",
-    "standby": "000000"
+    "standby": "000000",
+    "success": "00FF00"
   },
   "bot": {
     "username": "Feather",
