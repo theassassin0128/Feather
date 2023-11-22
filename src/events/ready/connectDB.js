@@ -13,10 +13,7 @@ module.exports = {
   execute: async (client) => {
     if (!DATABASE_URL) return;
     try {
-      mongoose.connect(DATABASE_URL, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
+      mongoose.connect(DATABASE_URL);
       console.log("DATABASE connected.");
     } catch (error) {
       console.error(`Error Occured:\n${error}`);

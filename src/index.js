@@ -36,7 +36,6 @@ client.mongodb = new MongoClient(DATABASE_URL);
 client.events = new Collection();
 
 process.on("unhandledRejection", (error) => console.error(error));
-process.on("uncaughtException", (error) => console.error(error));
 
 (async () => {
   try {
