@@ -6,7 +6,7 @@ const {
   SlashCommandBuilder,
   ChannelType,
 } = require("discord.js");
-const errorlog = require("../../schemas/errorLog.js");
+const errorlog = require("../../schemas/errorlog.js");
 const { colours } = require("../../config.json");
 
 module.exports = {
@@ -142,10 +142,11 @@ module.exports = {
         break;
       case "info":
         {
-          const guild = doc ? client.guilds.fetch(doc.Guild) : "";
-          const channel = guild
-            ? (await guild).channels.fetch(doc.Channel)
-            : "";
+          if (!doc) return;
+          const guild = await client.guilds.fetch(doc.Guild);
+          if (!guild) return;
+          const channel = await guild.channels.fetch(doc.Channel);
+          if (!channel) return;
 
           const info = new EmbedBuilder()
             .setAuthor({
@@ -154,21 +155,13 @@ module.exports = {
             })
             .setTitle("ERROR LOG INFO")
             .setDescription(
-              `\`\`\`js\nmodule.exports = {\n  server: ${
-                guild
-                  ? `{\n    name: "${guild.name}",\n    id: "${guild.id}"\n  }`
-                  : `"Not Setup"`
-              },\n  channel: ${
-                channel
-                  ? `{\n    name: "${channel.name}",\n    id: "${channel.id}"\n  }`
-                  : `"Not Setup"`
-              },\n  enabled: ${doc ? `${doc.Enabled}` : "false"}\n};\n\`\`\``
+              `\`\`\`js\nmodule.exports = {\n  server: {\n    name: "${guild.name}",\n    id: "${guild.id}"\n  },\n  channel: {\n    name: "${channel.name}",\n    id: "${channel.id}"\n  },\n  enabled: ${doc.Enabled}\n};\n\`\`\``
             )
-            .setThumbnail(guild ? (await guild).iconURL() : null)
+            .setThumbnail()
             .setColor(colours.main)
             .setFooter({
-              text: client.user.tag,
-              iconURL: client.user.displayAvatarURL(),
+              text: guild.name,
+              iconURL: guild.iconURL(),
             })
             .setTimestamp();
 
