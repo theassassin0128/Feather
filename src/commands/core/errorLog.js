@@ -1,136 +1,3 @@
-const errorlog = client.mongodb.db("test").collection("errorlog");
-if (!errorlog) client.mongodb.db("test").createCollection("errorlog");
-
-const doc = await errorlog.findOne({ Guild: interaction.guild.id });
-
-switch (interaction.options.getSubcommand()) {
-  case "setup":
-    {
-      const channel =
-        interaction.options.getChannel("channel") || interaction.channel;
-
-      const embed = new EmbedBuilder()
-        .setAuthor({
-          name: interaction.user.username,
-          iconURL: interaction.user.displayAvatarURL(),
-        })
-        .setTitle("Setup Complete")
-        .setDescription(
-          `\`\`\`js\nmodule.exports = {\n  server: ${`{\n    name: "${interaction.guild.name}",\n    id: "${interaction.guild.id}"\n  }`},\n  channel: ${`{\n    name: "${channel.name}",\n    id: "${channel.id}"\n  }`},\n  enabled: true\n};\n\`\`\`\n\nFrom today onward all error logs and messages will be send to ${channel}`
-        )
-        .setThumbnail(interaction.guild.iconURL())
-        .setColor(colours.main)
-        .setFooter({
-          text: client.user.tag,
-          iconURL: client.user.displayAvatarURL(),
-        })
-        .setTimestamp();
-
-      if (!doc) {
-        await errorlog.insertOne({
-          Guild: interaction.guild.id,
-          Channel: channel.id,
-          Enabled: "true",
-        });
-
-        interaction.reply({
-          embeds: [embed],
-        });
-      } else {
-        await errorlog.updateOne(
-          { _id: doc._id },
-          { $set: { Channel: channel.id, Guild: interaction.guild.id } }
-        );
-
-        interaction.reply({
-          embeds: [embed],
-        });
-      }
-    }
-    break;
-  case "toggle":
-    {
-      if (!doc) {
-        return interaction.reply({
-          content: "errorlog channel is not setup.",
-          ephemeral: true,
-        });
-      }
-
-      const toggle = await errorlog.distinct("Enabled", { _id: doc._id });
-
-      if (toggle == "true") {
-        errorlog.updateOne({ _id: doc._id }, { $set: { Enabled: "false" } });
-
-        interaction.reply({
-          content: `Toggle **off** the errorlog.`,
-          ephemeral: true,
-        });
-      }
-      if (toggle == "false") {
-        errorlog.updateOne({ _id: doc._id }, { $set: { Enabled: "true" } });
-        return interaction.reply({
-          content: `Toggle **on** the errorlog.`,
-          ephemeral: true,
-        });
-      }
-    }
-    break;
-  case "delete":
-    {
-      if (!doc) {
-        interaction.reply({
-          content: "**Their is no errorlog channel**",
-          ephemeral: true,
-        });
-      } else {
-        await errorlog.deleteOne({ _id: doc._id });
-        interaction.reply({
-          content: "**Successfully deleted errorlog data.**",
-          ephemeral: true,
-        });
-      }
-    }
-    break;
-  case "info":
-    {
-      const guild = doc ? await client.guilds.fetch(doc.Guild) : "";
-      const channel = guild
-        ? (await guild.channels.fetch()).get(doc.Channel)
-        : "";
-
-      const info = new EmbedBuilder()
-        .setAuthor({
-          name: interaction.user.username,
-          iconURL: interaction.user.displayAvatarURL(),
-        })
-        .setTitle("ERROR LOG INFO")
-        .setDescription(
-          `\`\`\`js\nmodule.exports = {\n  server: ${
-            guild
-              ? `{\n    name: "${guild.name}",\n    id: "${guild.id}"\n  }`
-              : `"Not Setup"`
-          },\n  channel: ${
-            channel
-              ? `{\n    name: "${channel.name}",\n    id: "${channel.id}"\n  }`
-              : `"Not Setup"`
-          },\n  enabled: ${doc ? `${doc.Enabled}` : "false"}\n};\n\`\`\``
-        )
-        .setThumbnail(guild ? guild.iconURL() : null)
-        .setColor(colours.main)
-        .setFooter({
-          text: client.user.tag,
-          iconURL: client.user.displayAvatarURL(),
-        })
-        .setTimestamp();
-
-      interaction.reply({
-        embeds: [info],
-      });
-    }
-    break;
-}
-
 const {
   EmbedBuilder,
   ChatInputCommandInteraction,
@@ -139,7 +6,7 @@ const {
   SlashCommandBuilder,
   ChannelType,
 } = require("discord.js");
-const errorLog = require("../../schemas/errorLog.js");
+const errorlog = require("../../schemas/errorLog.js");
 const { colours } = require("../../config.json");
 
 module.exports = {
@@ -178,6 +45,10 @@ module.exports = {
    * @param {Client} client
    */
   execute: async (interaction, client) => {
+    const doc = await errorlog.findOne({
+      Guild: interaction.guild.id,
+    });
+
     switch (interaction.options.getSubcommand()) {
       case "setup":
         {
@@ -189,22 +60,21 @@ module.exports = {
               name: interaction.user.username,
               iconURL: interaction.user.displayAvatarURL(),
             })
+            .setTitle("Setup Complete")
             .setDescription(
-              `***Setup Complete***\n\nGuild : ${interaction.guild.id} | ${interaction.guild.name}\nChannel : ${channel.id} | <#${channel.id}>\nEnabled : *True*`
+              `\`\`\`js\nmodule.exports = {\n  server: ${`{\n    name: "${interaction.guild.name}",\n    id: "${interaction.guild.id}"\n  }`},\n  channel: ${`{\n    name: "${channel.name}",\n    id: "${channel.id}"\n  }`},\n  enabled: true\n};\n\`\`\`\n\nFrom today onward all error logs and messages will be send to ${channel}`
             )
+            .setThumbnail(interaction.guild.iconURL())
             .setColor(colours.main)
             .setFooter({
-              text: interaction.guild.name,
-              iconURL: interaction.guild.iconURL(),
+              text: client.user.tag,
+              iconURL: client.user.displayAvatarURL(),
             })
             .setTimestamp();
 
-          const DOC = await errorLog.findOne({
-            Guild: interaction.guild.id,
-          });
-
-          if (!DOC) {
-            await errorLog.create({
+          if (!doc) {
+            interaction.options.getChannel("channel") || interaction.channel;
+            await errorlog.create({
               Guild: interaction.guild.id,
               Channel: channel.id,
               Enabled: "true",
@@ -215,11 +85,11 @@ module.exports = {
               ephemeral: true,
             });
           } else {
-            DOC.$set("Channel", `${channel.id}`);
-            DOC.save();
+            doc.$set("Channel", `${channel.id}`);
+            doc.save();
 
             return interaction.reply({
-              content: `***Changed***\nChannel : ${channel.id} | <#${channel.id}>`,
+              content: `**Updated** errorlog channel - <#${channel.id}>\n\`\`\`js\nChannel: "${channel.id}"\n\`\`\``,
               ephemeral: true,
             });
           }
@@ -227,34 +97,28 @@ module.exports = {
         break;
       case "toggle":
         {
-          const DOC = await errorLog.findOne({
-            Guild: interaction.guild.id,
-          });
-
-          if (!DOC) {
+          if (!doc) {
             return interaction.reply({
-              content: "error-log channel is not setup.",
+              content: "The errorlog  is not setup.",
               ephemeral: true,
             });
           }
 
-          const toggle = DOC.get("Enabled");
-
-          if (toggle == "true") {
-            DOC.$set("Enabled", "false");
-            DOC.save();
+          if (doc.Enabled == "true") {
+            doc.$set("Enabled", "false");
+            doc.save();
 
             return interaction.reply({
-              content: `Toggle **off** the error-log.`,
+              content: `Toggle **off** the errorlog.`,
               ephemeral: true,
             });
           }
-          if (toggle == "false") {
-            DOC.$set("Enabled", "true");
-            DOC.save();
+          if (doc.Enabled == "false") {
+            doc.$set("Enabled", "true");
+            doc.save();
 
             return interaction.reply({
-              content: `Toggle **on** the error-log.`,
+              content: `Toggle **on** the errorlog.`,
               ephemeral: true,
             });
           }
@@ -262,21 +126,56 @@ module.exports = {
         break;
       case "delete":
         {
-          const DOC = await errorLog.findOne({
-            Guild: interaction.guild.id,
-          });
-          if (!DOC) {
+          if (!doc) {
             interaction.reply({
-              content: "**Their is no error-log channel setup**",
+              content: "**Their is no errorlog channel**",
               ephemeral: true,
             });
           } else {
-            await errorLog.deleteOne({ Guild: interaction.guild.id });
+            await errorlog.deleteOne({ Guild: interaction.guild.id });
             interaction.reply({
-              content: "**Successfully deleted error-log channel.**",
+              content: "**Successfully deleted errorlog system data.**",
               ephemeral: true,
             });
           }
+        }
+        break;
+      case "info":
+        {
+          const guild = doc ? client.guilds.fetch(doc.Guild) : "";
+          const channel = guild
+            ? (await guild).channels.fetch(doc.Channel)
+            : "";
+
+          const info = new EmbedBuilder()
+            .setAuthor({
+              name: interaction.user.username,
+              iconURL: interaction.user.displayAvatarURL(),
+            })
+            .setTitle("ERROR LOG INFO")
+            .setDescription(
+              `\`\`\`js\nmodule.exports = {\n  server: ${
+                guild
+                  ? `{\n    name: "${guild.name}",\n    id: "${guild.id}"\n  }`
+                  : `"Not Setup"`
+              },\n  channel: ${
+                channel
+                  ? `{\n    name: "${channel.name}",\n    id: "${channel.id}"\n  }`
+                  : `"Not Setup"`
+              },\n  enabled: ${doc ? `${doc.Enabled}` : "false"}\n};\n\`\`\``
+            )
+            .setThumbnail(guild ? (await guild).iconURL() : null)
+            .setColor(colours.main)
+            .setFooter({
+              text: client.user.tag,
+              iconURL: client.user.displayAvatarURL(),
+            })
+            .setTimestamp();
+
+          interaction.reply({
+            embeds: [info],
+            ephemeral: true,
+          });
         }
         break;
     }

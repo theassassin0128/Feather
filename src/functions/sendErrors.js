@@ -5,6 +5,7 @@ const {
 } = require("discord.js");
 const { TEST_SERVER_ID } = process.env;
 const { colours } = require("../config.json");
+const errorlog = require("../schemas/errorLog.js");
 
 /**
  *
@@ -12,7 +13,6 @@ const { colours } = require("../config.json");
  * @param {Client} client
  */
 async function sendErrors(interaction, client, error) {
-  const errorlog = client.mongodb.db("test").collection("errorlog");
   if (!errorlog) return;
 
   const doc = await errorlog.findOne({ Enabled: "true" });
