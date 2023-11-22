@@ -58,6 +58,6 @@ Written above are some basic commands of the bot.
 
 ## Development
 
-Feather is an alternative version of [Node](https://github.com/theassassin0128/Node#README.md). Feather Bot was made to be used in my personal server. But you can use it as a public bot by doing some minor changes. Just remember that I am not going to commit regularly.
+Feather is an alternative version of [Node](https://github.com/theassassin0128/Node#README.md). Feather Bot was made to be used in personal servers. But you can use it as a public bot by doing some minor changes. Just remember that you will be on your on if you do so. Also I am not going to commit regularly.
 
 **Please! Help me if you can. Cause I'm still a Newbie.**
