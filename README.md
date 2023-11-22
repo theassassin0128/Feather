@@ -15,6 +15,7 @@
 
 ## Features
 
+- **Advance Event & Command Handlers**
 - **Error Logging System**
 
 ## Get Started
