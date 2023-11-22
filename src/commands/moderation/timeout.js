@@ -7,6 +7,7 @@ const {
 } = require("discord.js");
 const ms = require("ms");
 const { colours } = require("../../config.json");
+const infractions = require("../../schemas/infractions.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -39,9 +40,6 @@ module.exports = {
    * @returns
    */
   execute: async (interaction, client) => {
-    const infractions = client.mongodb.db("test").collection("infractions");
-    if (!infractions) client.mongodb.db("test").createCollection("infractions");
-
     const { options, guild, member, user } = interaction;
     const target = options.getMember("target");
     const duration = options.getString("duration");
@@ -102,37 +100,18 @@ module.exports = {
     });
 
     if (!userData) {
-      await infractions.insertOne({
+      userData = await infractions.create({
         Guild: guild.id,
         User: target.id,
         Infractions: [newInfractionObject],
       });
     } else {
-      await infractions.findOneAndUpdate(
-        {
-          Guild: guild.id,
-          User: target.id,
-        },
-        {
-          $set: {
-            Infractions: [newInfractionObject],
-          },
-        }
-      );
+      userData.Infractions.push(newInfractionObject) && (await userData.save());
     }
-    /*updateOne(
-        { Guild: guild.id, User: target.id },
-        {
-          set: {
-            Infractions: [newInfractionObject],
-          },
-        }
-      );
-    }*/
 
     const sEmbed = new EmbedBuilder()
       .setAuthor({ name: "Timeout Issues", iconURL: guild.iconURL() })
-      .setColor(colours.success)
+      .setColor(colours.main)
       .setDescription(
         [
           `${target} was issued a timeout for **${ms(ms(duration), {

@@ -6,4 +6,4 @@ const errorLogSchema = new Schema({
   Enabled: String,
 });
 
-module.exports = model("errorLog", errorLogSchema);
+module.exports = model("errorlog", errorLogSchema);

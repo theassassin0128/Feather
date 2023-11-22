@@ -64,11 +64,10 @@ module.exports = {
             .setDescription(
               `\`\`\`js\nmodule.exports = {\n  server: ${`{\n    name: "${interaction.guild.name}",\n    id: "${interaction.guild.id}"\n  }`},\n  channel: ${`{\n    name: "${channel.name}",\n    id: "${channel.id}"\n  }`},\n  enabled: true\n};\n\`\`\`\n\nFrom today onward all error logs and messages will be send to ${channel}`
             )
-            .setThumbnail(interaction.guild.iconURL())
             .setColor(colours.main)
             .setFooter({
-              text: client.user.tag,
-              iconURL: client.user.displayAvatarURL(),
+              text: interaction.guild.name,
+              iconURL: interaction.guild.iconURL(),
             })
             .setTimestamp();
 

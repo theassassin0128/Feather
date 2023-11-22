@@ -5,7 +5,7 @@ const {
 } = require("discord.js");
 const { TEST_SERVER_ID } = process.env;
 const { colours } = require("../config.json");
-const errorlog = require("../schemas/errorLog.js");
+const errorlog = require("../schemas/errorlog.js");
 
 /**
  *
