@@ -18,12 +18,12 @@
     "ascii-table": "^0.0.9",
     "distube": "^4.0.6",
     "dotenv": "^16.3.1",
-    "moment": "^2.29.4"
+    "moment": "^2.29.4",
+    "mongoose": "^8.0.1"
   },
   "devDependencies": {
     "discord.js": "^14.13.0",
     "glob": "^10.3.10",
-    "mongodb": "^6.1.0",
     "nodemon": "^3.0.1"
   }
 }
