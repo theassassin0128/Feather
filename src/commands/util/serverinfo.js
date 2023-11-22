@@ -3,6 +3,7 @@ const {
   SlashCommandBuilder,
   Client,
   ChatInputCommandInteraction,
+  ChannelType,
 } = require("discord.js");
 const moment = require("moment");
 const { colours } = require("../../config.json");
@@ -18,13 +19,42 @@ module.exports = {
    * @param {Client} client
    */
   execute: async (interaction, client) => {
+    interaction.deferReply();
     const { guild } = interaction;
-    let Roles = guild.roles.cache;
-    let owner = (await guild.members.fetch()).get(guild.ownerId);
-    let Channels = await guild.channels.fetch();
+    var Roles = guild.roles.cache;
+    var owner = (await guild.members.fetch()).get(guild.ownerId);
+    var Channels = await guild.channels.fetch();
 
-    let server = new EmbedBuilder()
-      .setTitle(`${interaction.guild.name}`)
+    let humans = 0;
+    let bots = 0;
+    let text = 0;
+    let voice = 0;
+    let category = 0;
+    let stage = 0;
+    let forum = 0;
+    let announcement = 0;
+
+    const allMembers = await guild.members.fetch();
+    allMembers.forEach((member) => {
+      if (member.user.bot) bots++;
+      else humans++;
+    });
+
+    const allChannels = await guild.channels.fetch();
+    allChannels.forEach((channel) => {
+      if (channel.type == 0) text++; // GUILD_TEXT = 0
+      if (channel.type == 2) voice++; // GUILD_VOICE = 2
+      if (channel.type == 4) category++; // GUILD_CATEGORY = 4
+      if (channel.type == 5) announcement++; // GUILD_ANNOUNCEMENT = 5
+      if (channel.type == 13) stage++; //GUILD_STAGE_VOICE = 13
+      if (channel.type == 15) forum++; //GUILD_FORUM = 15
+    });
+
+    var server = new EmbedBuilder()
+      .setAuthor({
+        name: interaction.guild.name,
+        iconURL: interaction.guild.iconURL(),
+      })
       .addFields(
         {
           name: "🆔 ID",
@@ -38,15 +68,15 @@ module.exports = {
         },
         {
           name: "👑 Owned by",
-          value: `${owner} (${owner.id})`,
+          value: `${owner} | ${owner.id}`,
         },
         {
           name: `👥 Members [${guild.memberCount}]`,
-          value: "More information will be added in future Updates.",
+          value: `Humans: ${humans}\nBots: ${bots}`,
         },
         {
           name: `💬 Channels [${Channels.size}]`,
-          value: "More information will be added in the future updates.",
+          value: `Text: ${text} | Voice: ${voice}\nStage: ${stage} | Forum: ${forum}\nCategory: ${category} | Anouncment: ${announcement}`,
         },
         {
           name: `🔐 Roles [${Roles.size}]`,
@@ -54,9 +84,9 @@ module.exports = {
         }
       )
       .setColor(colours.main)
-      .setThumbnail(guild.iconURL({ size: 4096 }));
+      .setThumbnail(guild.iconURL());
 
-    interaction.reply({
+    interaction.editReply({
       embeds: [server],
     });
   },
