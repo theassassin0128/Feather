@@ -22,8 +22,7 @@ async function loadCommands(client) {
         Status: "✅️",
       }); //Replace "\\" with "/" if you are using mac/linux
 
-      if (commandObject.test) applicationGuildCommands.push(commandObject.data);
-      else applicationCommands.push(commandObject.data);
+      applicationGuildCommands.push(commandObject.data);
     } catch (error) {
       commands.push({
         Commands: file.split("\\").pop().slice(0, -3) + ".js",
@@ -35,9 +34,6 @@ async function loadCommands(client) {
 
   rest.put(Routes.applicationGuildCommands(BOT_ID, TEST_SERVER_ID), {
     body: applicationGuildCommands,
-  });
-  rest.put(Routes.applicationCommands(BOT_ID), {
-    body: applicationCommands,
   });
 
   console.table(commands, ["Commands", "Status"]);

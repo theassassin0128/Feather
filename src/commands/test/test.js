@@ -15,7 +15,6 @@ module.exports = {
     .addUserOption((option) =>
       option.setName("user").setDescription("Select an user.").setRequired(true)
     ),
-  test: true,
   /**
    *
    * @param {ChatInputCommandInteraction} interaction

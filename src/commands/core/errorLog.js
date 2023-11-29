@@ -38,7 +38,6 @@ module.exports = {
         .setName("info")
         .setDescription("Get information regarding error log system.")
     ),
-  test: true,
   /**
    *
    * @param {ChatInputCommandInteraction} interaction
