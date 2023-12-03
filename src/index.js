@@ -37,6 +37,7 @@ client.config = require("./config.json");
 const config = require("./config.json");
 client.emotes = config.emoji;
 
+client.aliases = new Collection();
 client.commands = new Collection();
 client.events = new Collection();
 

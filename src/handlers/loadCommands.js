@@ -22,6 +22,12 @@ async function loadCommands(client) {
         Status: "✅️",
       }); //Replace "/" with "\\" if you are using mac/linux
 
+      if (commandObject.aliases && Array.isArray(commandObject.aliases)) {
+        commandObject.aliases.forEach((alias) => {
+          client.aliases.set(alias, commandObject.data.name);
+        });
+      }
+
       if (commandObject.execute)
         applicationGuildCommands.push(commandObject.data);
     } catch (error) {
