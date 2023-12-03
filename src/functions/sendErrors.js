@@ -12,7 +12,7 @@ const errorlog = require("../schemas/errorlog.js");
  * @param {ChatInputCommandInteraction} interaction
  * @param {Client} client
  */
-async function sendErrors(interaction, client, error) {
+async function sendErrors(interaction, error, client) {
   if (!errorlog) return;
 
   const doc = await errorlog.findOne({ Enabled: "true" });

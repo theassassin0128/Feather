@@ -9,5 +9,14 @@
     "username": "Feather",
     "discraminator": "9414",
     "id": "1134910320121499678"
+  },
+  "defaultPrefix": "$",
+  "emoji": {
+    "play": "▶️",
+    "stop": "⏹️",
+    "queue": "📄",
+    "success": "☑️",
+    "repeat": "🔁",
+    "error": "❌"
   }
 }

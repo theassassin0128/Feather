@@ -6,8 +6,6 @@ const {
   GatewayIntentBits,
   Partials,
 } = require("discord.js");
-const { MongoClient } = require("mongodb");
-const { DATABASE_URL } = process.env;
 
 const { loadEvents } = require("./handlers/loadEvents");
 const { loadCommands } = require("./handlers/loadCommands");
@@ -17,6 +15,7 @@ const client = new Client({
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildVoiceStates,
     GatewayIntentBits.MessageContent,
   ],
   partials: [
@@ -30,9 +29,15 @@ const client = new Client({
   allowedMentions: {
     repliedUser: false,
   },
+  failIfNotExists: true,
 });
 
-client.mongodb = new MongoClient(DATABASE_URL);
+client.config = require("./config.json");
+
+const config = require("./config.json");
+client.emotes = config.emoji;
+
+client.commands = new Collection();
 client.events = new Collection();
 
 process.on("unhandledRejection", (error) => console.error(error));

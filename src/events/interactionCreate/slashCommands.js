@@ -73,7 +73,7 @@ module.exports = {
         content: `An error occured while executing the command.`,
         ephemeral: true,
       });
-      await sendErrors(interaction, client, error);
+      await sendErrors(interaction, error, client);
       return console.error(error);
     }
   },

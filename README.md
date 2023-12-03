@@ -7,16 +7,17 @@
 
 ## Road Map
 
-- [x] **Basic Bot**
+- [x] **Music Bot**
 - [ ] **Moderation Bot**
-- [ ] **Website**
 - [ ] **Chat Bot**
+- [ ] **Website**
 - [ ] **Web based Dashboard**
 
 ## Features
 
 - **Advance Event & Command Handlers**
 - **Error Logging System**
+- **Music Bot with basic Features**
 
 ## Get Started
 

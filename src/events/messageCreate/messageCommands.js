@@ -1,5 +1,4 @@
 const { Client, Message } = require("discord.js");
-const { BOT_PREFIX } = process.env;
 
 module.exports = {
   name: "messageCreate",
@@ -12,10 +11,9 @@ module.exports = {
    * @returns
    */
   execute: async (message, client) => {
-    var default_prefix = BOT_PREFIX;
+    var default_prefix = client.config.defaultPrefix;
 
-    if (message.author.bot) return;
-    if (!message.guild) return;
+    if (message.author.bot || !message.guild) return;
     if (!message.content.startsWith(default_prefix)) return;
     if (!message.member) message.member = message.guild.fetchMember(message);
 
@@ -23,13 +21,26 @@ module.exports = {
       .slice(default_prefix.length)
       .trim()
       .split(/ +/g);
+
     const cmd = args.shift().toLowerCase();
 
     if (cmd.length === 0) return;
 
     var command = client.commands.get(cmd);
 
-    if (!command) command = client.commands.get(client.aliases.get(cmd));
-    if (command) command.run(client, message, args);
+    if (!command) return message.reply(`:x: | There is no command name ${cmd}`);
+
+    if (command.inVoiceChannel && !message.member.voice.channel) {
+      return message.channel.send(
+        `${client.emotes.error} | You must be in a voice channel!`
+      );
+    }
+
+    try {
+      command.run(client, message, args);
+    } catch (e) {
+      console.error(e);
+      message.channel.send(`${client.emotes.error} | Error: \`${e}\``);
+    }
   },
 };

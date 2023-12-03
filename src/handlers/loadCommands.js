@@ -4,11 +4,11 @@ const rest = new REST({ version: "10" }).setToken(DISCORD_TOKEN);
 const { loadFiles } = require("../functions/loadFiles");
 
 async function loadCommands(client) {
-  console.time("Load Time");
-  client.commands = new Map();
+  console.time("Time");
+
+  await client.commands.clear();
   const commands = new Array();
   const applicationGuildCommands = new Array();
-  const applicationCommands = new Array();
 
   const files = await loadFiles("src/commands");
 
@@ -18,16 +18,17 @@ async function loadCommands(client) {
 
       client.commands.set(commandObject.data.name, commandObject);
       commands.push({
-        Commands: file.split("\\").pop().slice(0, -3) + ".js",
+        Commands: file.split("/").pop(),
         Status: "✅️",
-      }); //Replace "\\" with "/" if you are using mac/linux
+      }); //Replace "/" with "\\" if you are using mac/linux
 
-      applicationGuildCommands.push(commandObject.data);
+      if (commandObject.execute)
+        applicationGuildCommands.push(commandObject.data);
     } catch (error) {
       commands.push({
-        Commands: file.split("\\").pop().slice(0, -3) + ".js",
+        Commands: file,
         Status: "❌️",
-      }); //Replace "\\" with "/" if you are using mac/linux
+      });
       console.error(error);
     }
   }
@@ -37,7 +38,7 @@ async function loadCommands(client) {
   });
 
   console.table(commands, ["Commands", "Status"]);
-  console.timeEnd("Load Time");
+  console.timeEnd("Time");
 }
 
 module.exports = { loadCommands };

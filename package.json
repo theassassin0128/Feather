@@ -5,8 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo\"no test specified.\"",
-    "start": "node .",
-    "dev": "nodemon ."
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
   },
   "keywords": [
     "disocrd",
@@ -15,11 +15,7 @@
   "author": "theassassin0128",
   "license": "MIT",
   "dependencies": {
-    "@discordjs/voice": "^0.16.1",
-    "ascii-table": "^0.0.9",
-    "distube": "^4.0.6",
     "dotenv": "^16.3.1",
-    "ffmpeg": "^0.0.4",
     "moment": "^2.29.4",
     "mongoose": "^8.0.1"
   },

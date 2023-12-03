@@ -1,8 +1,8 @@
 const { loadFiles } = require("../functions/loadFiles");
 
 async function loadEvents(client) {
-  console.time("Load Time");
-  client.events = new Map();
+  console.time("Time");
+  await client.events.clear();
   const events = new Array();
 
   const files = await loadFiles("src/events");
@@ -13,24 +13,26 @@ async function loadEvents(client) {
       const execute = (...args) => eventObject.execute(...args, client);
       const target = eventObject.rest ? client.rest : client;
 
-      target[eventObject.once ? "once" : "on"](eventObject.name, execute);
+      if (eventObject.distube) client.distube.on(eventObject.name, execute);
+      else target[eventObject.once ? "once" : "on"](eventObject.name, execute);
+
       client.events.set(eventObject.name, execute);
 
       events.push({
-        Events: file.split("\\").pop().slice(0, -3) + ".js",
+        Events: file.split("/").pop(),
         Status: "✅️",
-      }); //Replace "\\" with "/" if you are using mac/linux
+      }); //Replace "/" with "\\" if you are using mac/linux
     } catch (error) {
       events.push({
-        Events: file.split("\\").pop().slice(0, -3) + ".js",
+        Events: file,
         Status: "❌️",
-      }); //Replace "\\" with "/" if you are using mac/linux
+      });
       console.error(error);
     }
   }
 
   console.table(events, ["Events", "Status"]);
-  console.timeEnd("Load Time");
+  console.timeEnd("Time");
 }
 
 module.exports = { loadEvents };
