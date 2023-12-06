@@ -1,6 +1,6 @@
 {
   "name": "feather",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A Discord Bot",
   "main": "src/index.js",
   "scripts": {
@@ -15,6 +15,7 @@
   "author": "theassassin0128",
   "license": "MIT",
   "dependencies": {
+    "chalk": "^4.1.2",
     "dotenv": "^16.3.1",
     "moment": "^2.29.4",
     "mongoose": "^8.0.1"

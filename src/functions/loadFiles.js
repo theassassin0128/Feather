@@ -17,7 +17,6 @@ async function loadFiles(dirName) {
     await Promise.all(jsFiles.map(deleteCashedFile));
     return jsFiles;
   } catch (error) {
-    console.error(`Error loading files from directory ${dirName}: ${error}`);
     throw error;
   }
 }

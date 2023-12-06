@@ -1,46 +1,39 @@
-const {
-  ChatInputCommandInteraction,
-  Client,
-  EmbedBuilder,
-} = require("discord.js");
-const { TEST_SERVER_ID } = process.env;
-const { colours } = require("../config.json");
-const errorlog = require("../schemas/errorlog.js");
+const { Client, EmbedBuilder } = require("discord.js");
 
 /**
  *
- * @param {ChatInputCommandInteraction} interaction
  * @param {Client} client
  */
-async function sendErrors(interaction, error, client) {
-  if (!errorlog) return;
+async function sendErrors(error, client) {
+  try {
+    const { colours } = require("../config.json");
+    const errorlog = require("../schemas/errorlog.js");
 
-  const doc = await errorlog.findOne({ Enabled: "true" });
-  if (!doc) return;
+    if (!errorlog) return;
 
-  const guild = await client.guilds.fetch(doc.Guild);
-  if (!guild) return;
+    const doc = await errorlog.findOne({ Enabled: "true" });
+    if (!doc) return;
 
-  const channel = await guild.channels.fetch(doc.Channel);
-  if (!channel) return;
+    const guild = await client.guilds.fetch(doc.Guild);
+    if (!guild) return;
 
-  const errorEmbed = new EmbedBuilder()
-    .setAuthor({
-      name: client.user.tag,
-      iconURL: client.user.displayAvatarURL(),
-    })
-    .setTitle("ERROR LOG")
-    .setDescription(
-      `An error occoured while executing \ncommand: **${interaction.commandName}** \non channel: **${interaction.channel.name}** \nin server: **${interaction.guild.name}**.\n\nerror log: \`\`\`js\n${error}\n\`\`\``
-    )
-    .setColor(colours.error)
-    .setFooter({
-      text: interaction.guild.name,
-      iconURL: interaction.guild.iconURL(),
-    })
-    .setTimestamp();
+    const channel = await guild.channels.fetch(doc.Channel);
+    if (!channel) return;
 
-  return channel.send({ embeds: [errorEmbed] });
+    const errorEmbed = new EmbedBuilder()
+      .setAuthor({
+        name: client.user.tag,
+        iconURL: client.user.displayAvatarURL(),
+      })
+      .setTitle("An Error Occoured")
+      .setDescription(`\`\`\`${error}\`\`\``)
+      .setColor(colours.error)
+      .setTimestamp();
+
+    return channel.send({ embeds: [errorEmbed] });
+  } catch (error) {
+    throw error;
+  }
 }
 
 module.exports = { sendErrors };

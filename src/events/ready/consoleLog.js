@@ -9,9 +9,6 @@ module.exports = {
    * @param {Client} client
    */
   execute: async (client) => {
-    console.log(
-      "\n\x1b[36m%s\x1b[0m",
-      `[Discord API]: Logged in as ${client.user.tag}`
-    );
+    client.log(`Logged in as ${client.user.tag}`, "log");
   },
 };

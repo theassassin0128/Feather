@@ -14,9 +14,9 @@ module.exports = {
     if (!DATABASE_URL) return;
     try {
       mongoose.connect(DATABASE_URL);
-      console.log("DATABASE connected.");
+      client.log("DATABASE connected.", "log");
     } catch (error) {
-      console.error(`Error Occured:\n${error}`);
+      throw error;
     }
   },
 };

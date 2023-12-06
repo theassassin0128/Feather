@@ -1,9 +1,8 @@
+const chalk = require("chalk");
 const { loadFiles } = require("../functions/loadFiles");
 
-async function loadEvents(client) {
-  console.time("Time");
+async function events(client) {
   await client.events.clear();
-  const events = new Array();
 
   const files = await loadFiles("src/events");
 
@@ -17,22 +16,12 @@ async function loadEvents(client) {
       else target[eventObject.once ? "once" : "on"](eventObject.name, execute);
 
       client.events.set(eventObject.name, execute);
-
-      events.push({
-        Events: file.split("/").pop(),
-        Status: "✅️",
-      }); //Replace "/" with "\\" if you are using mac/linux
     } catch (error) {
-      events.push({
-        Events: file,
-        Status: "❌️",
-      });
-      console.error(error);
+      throw error;
     }
   }
 
-  console.table(events, ["Events", "Status"]);
-  console.timeEnd("Time");
+  return client.log("loaded events", "log");
 }
 
-module.exports = { loadEvents };
+module.exports = { events };

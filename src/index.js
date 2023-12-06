@@ -6,9 +6,11 @@ const {
   GatewayIntentBits,
   Partials,
 } = require("discord.js");
-
-const { loadEvents } = require("./handlers/loadEvents");
-const { loadCommands } = require("./handlers/loadCommands");
+const config = require("./config.json");
+const { events } = require("./handlers/events");
+const { commands } = require("./handlers/commands");
+const { errors } = require("./handlers/errors");
+const { sendErrors } = require("./functions/sendErrors");
 
 const client = new Client({
   intents: [
@@ -32,23 +34,19 @@ const client = new Client({
   failIfNotExists: true,
 });
 
-client.config = require("./config.json");
-
-const config = require("./config.json");
-client.emotes = config.emoji;
-
+client.log = require("./functions/log");
 client.aliases = new Collection();
 client.commands = new Collection();
 client.events = new Collection();
 
-process.on("unhandledRejection", (error) => console.error(error));
-
 (async () => {
   try {
-    await loadEvents(client);
-    await loadCommands(client);
-    client.login(DISCORD_TOKEN);
+    await client.login(DISCORD_TOKEN);
+    errors();
+    events(client);
+    commands(client);
   } catch (error) {
+    await sendErrors(error, client);
     console.error(error);
   }
 })();
