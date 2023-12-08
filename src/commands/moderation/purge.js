@@ -33,19 +33,20 @@ module.exports = {
    * @param {Client} client
    */
   execute: async (interaction, client) => {
-    interaction.reply({
-      content: "Working on it .......",
+    interaction.deferReply({
       ephemeral: true,
     });
+
     const amount = interaction.options.getInteger("amount");
     const target = interaction.options.getUser("target");
+
     const embed = new EmbedBuilder()
       .setAuthor({
         name: interaction.user.username,
         iconURL: interaction.user.displayAvatarURL(),
       })
       .setTitle("TASK COMPLETED")
-      .setColor(client.colours.main)
+      .setColor(client.colors.main)
       .setFooter({
         text: client.user.tag,
         iconURL: client.user.displayAvatarURL(),

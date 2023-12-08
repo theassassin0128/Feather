@@ -1,9 +1,8 @@
-const { TEST_SERVER_ID, BOT_ID, DISCORD_TOKEN } = process.env;
-const { REST, Routes } = require("discord.js");
-const rest = new REST({ version: "10" }).setToken(DISCORD_TOKEN);
-const { loadFiles } = require("../functions/loadFiles");
-
 async function commands(client) {
+  const { REST, Routes } = require("discord.js");
+  const rest = new REST({ version: "10" }).setToken(client.config.token);
+  const { loadFiles } = require("../functions/loadFiles");
+
   await client.commands.clear();
   const applicationGuildCommands = new Array();
 
@@ -28,9 +27,15 @@ async function commands(client) {
     }
   }
 
-  rest.put(Routes.applicationGuildCommands(BOT_ID, TEST_SERVER_ID), {
-    body: applicationGuildCommands,
-  });
+  rest.put(
+    Routes.applicationGuildCommands(
+      client.config.botId,
+      client.config.serverId
+    ),
+    {
+      body: applicationGuildCommands,
+    }
+  );
 
   client.log("loaded commands", "log");
 }

@@ -4,7 +4,6 @@ const {
   ChatInputCommandInteraction,
   Client,
 } = require("discord.js");
-const wait = require("timers/promises").setTimeout;
 
 module.exports = {
   data: new SlashCommandBuilder()

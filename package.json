@@ -1,6 +1,6 @@
 {
   "name": "feather",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A Discord Bot",
   "main": "src/index.js",
   "scripts": {

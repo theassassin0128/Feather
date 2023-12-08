@@ -26,7 +26,7 @@ module.exports = {
         `Hey**<@${interaction.member.user.id}>**, I'm <@${client.user.id}>!\n\nA Discord bot with many awesome features.\n\n\`🎵\`•Music\n\`🗒️\`•Information\n\`💽\`•Playlists\n\`⚙️\`•Config\n\n*Choose an category below button to see commands.*\n\n`
       )
       .setThumbnail(client.user.displayAvatarURL())
-      .setColor(client.config.colours.main)
+      .setColor(client.colors.main)
       .setTimestamp()
       .setFooter({
         text: `Requested by: ${interaction.member.user.username}`,
@@ -118,7 +118,7 @@ module.exports = {
           .filter((x) => x.category && x.category === "Music")
           .map((x) => `\`${x.name}\``);
         editEmbed
-          .setColor(client.config.colours.main)
+          .setColor(client.colors.main)
           .setDescription(commands.join(", "))
           .setTitle("Music Commands")
           .setFooter({ text: `Total ${commands.length} music commands.` });
@@ -137,7 +137,7 @@ module.exports = {
           .map((x) => `\`${x.data.name}\``);
 
         editEmbed
-          .setColor(client.config.colours.main)
+          .setColor(client.colors.main)
           .setDescription(commands.join(", "))
           .setTitle("Information Commands")
           .setFooter({
@@ -158,7 +158,7 @@ module.exports = {
           .map((x) => `\`${x.name}\``);
 
         editEmbed
-          .setColor(client.config.colours.main)
+          .setColor(client.colors.main)
           .setDescription(commands.join(", "))
           .setTitle("Playlist Commands")
           .setFooter({ text: `Total ${commands.length} playlist commands.` });
@@ -176,7 +176,7 @@ module.exports = {
           .map((x) => `\`${x.name}\``);
 
         editEmbed
-          .setColor(client.config.colours.main)
+          .setColor(client.colors.main)
           .setDescription(commands.join(", "))
           .setTitle("Config Commands")
           .setFooter({ text: `Total ${commands.length} config commands.` });

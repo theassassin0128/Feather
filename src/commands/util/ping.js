@@ -10,11 +10,11 @@ module.exports = {
     .setName("ping")
     .setDescription("🏓️ Replies with API & WS ping.")
     .setDMPermission(true),
-  category: "Information",
+  category: "Utility",
   /**
    *
    * @param {ChatInputCommandInteraction} interaction
-   * @param {Client} client
+   * @param {Client} clientclient.colours
    */
   execute: async (interaction, client) => {
     await interaction.deferReply();

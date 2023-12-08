@@ -33,11 +33,11 @@ const client = new Client({
   failIfNotExists: true,
 });
 
-const { config, emoji, colours } = require("./config");
+const { config, emoji, colors } = require("./config");
 
 client.config = config;
-client.emotes = emoji;
-client.colours = colours;
+client.emoji = emoji;
+client.colors = colors;
 
 client.log = require("./functions/log");
 client.aliases = new Collection();

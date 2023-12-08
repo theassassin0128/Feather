@@ -10,7 +10,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("botinfo")
     .setDescription("Replies with current stats of the bot."),
-  category: "infInformation",
+  category: "Utility",
   /**
    *
    * @param {ChatInputCommandInteraction} interaction
@@ -32,7 +32,7 @@ module.exports = {
     };
 
     const stats = new EmbedBuilder()
-      .setColor(colours.main)
+      .setColor(client.colors.main)
       .setTitle("__GENERAL INFO__")
       .setDescription(
         [

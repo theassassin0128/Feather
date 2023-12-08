@@ -12,7 +12,7 @@ module.exports = {
     .setName("serverinfo")
     .setDescription("Replies with server information.")
     .setDMPermission(false),
-  category: "Information",
+  category: "Utility",
   /**
    *
    * @param {ChatInputCommandInteraction} interaction
@@ -83,7 +83,7 @@ module.exports = {
           value: "Use `/roles` to get a list of roles",
         }
       )
-      .setColor(client.colours.main)
+      .setColor(client.colors.main)
       .setImage(guild.iconURL());
 
     interaction.editReply({

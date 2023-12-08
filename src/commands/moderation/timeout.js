@@ -49,7 +49,7 @@ module.exports = {
 
       const errorEmbed = new EmbedBuilder()
         .setAuthor({ name: "Could not timeout member due to" })
-        .setColor(client.colours.error);
+        .setColor(client.colors.error);
 
       if (!target)
         return interaction.reply({
@@ -115,7 +115,7 @@ module.exports = {
 
     const sEmbed = new EmbedBuilder()
       .setAuthor({ name: "Timeout Issues", iconURL: guild.iconURL() })
-      .setColor(client.colours.main)
+      .setColor(client.colors.main)
       .setDescription(
         [
           `${target} was issued a timeout for **${ms(ms(duration), {

@@ -34,7 +34,7 @@ module.exports = {
     await interaction.deferReply();
 
     let errEmbed = new EmbedBuilder()
-      .setColor(client.colours.error)
+      .setColor(client.colors.error)
       .setTitle("ERROR");
     let errArray = [];
     const { options, guild } = interaction;
@@ -78,7 +78,7 @@ module.exports = {
       .setDescription(
         `${member},\nThis is to notify you that have been banned from ${interaction.guild.name}.\n **Reason**: ${reason}`
       )
-      .setColor(client.colours.main)
+      .setColor(client.colors.main)
       .setFooter({
         text: interaction.guild.name,
         iconURL: interaction.guild.iconURL(),
@@ -91,7 +91,7 @@ module.exports = {
       .setDescription(
         `Sucessfully banned **${member.user.tag}**\n**Executed By**: ${interaction.user}\n**Reason**: ${reason}`
       )
-      .setColor(client.colours.main);
+      .setColor(client.colors.main);
     try {
       await member.ban({ reason });
       return interaction.editReply({

@@ -14,7 +14,7 @@ module.exports = {
     .addRoleOption((options) =>
       options.setName("role").setDescription("The role").setRequired(true)
     ),
-  category: "Information",
+  category: "Utility",
   /**
    *
    * @param {ChatInputCommandInteraction} interaction

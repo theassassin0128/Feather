@@ -62,7 +62,7 @@ module.exports = {
             .setDescription(
               `\`\`\`js\nmodule.exports = {\n  server: ${`{\n    name: "${interaction.guild.name}",\n    id: "${interaction.guild.id}"\n  }`},\n  channel: ${`{\n    name: "${channel.name}",\n    id: "${channel.id}"\n  }`},\n  enabled: true\n};\n\`\`\`\n\nFrom today onward all error logs and messages will be send to ${channel}`
             )
-            .setColor(client.colours.main)
+            .setColor(client.colors.main)
             .setFooter({
               text: interaction.guild.name,
               iconURL: interaction.guild.iconURL(),
@@ -139,11 +139,13 @@ module.exports = {
         break;
       case "info":
         {
-          if (!doc) return;
-          const guild = await client.guilds.fetch(doc.Guild);
-          if (!guild) return;
-          const channel = await guild.channels.fetch(doc.Channel);
-          if (!channel) return;
+          if (!doc)
+            return interaction.reply({
+              content: `${client.emoji.error} | Error Logging System is disabled for this server.`,
+              ephemeral: true,
+            });
+          var guild = await client.guilds.fetch(doc.Guild);
+          var channel = await guild.channels.fetch(doc.Channel);
 
           const info = new EmbedBuilder()
             .setAuthor({
@@ -152,10 +154,18 @@ module.exports = {
             })
             .setTitle("ERROR LOG INFO")
             .setDescription(
-              `\`\`\`js\nmodule.exports = {\n  server: {\n    name: "${guild.name}",\n    id: "${guild.id}"\n  },\n  channel: {\n    name: "${channel.name}",\n    id: "${channel.id}"\n  },\n  enabled: ${doc.Enabled}\n};\n\`\`\``
+              `\`\`\`js\nmodule.exports = {\n  server: {\n    name: "${
+                guild ? guild.name : "Couldn't find it."
+              }",\n    id: "${
+                guild ? guild.id : " "
+              }"\n  },\n  channel: {\n    name: "${
+                channel ? channel.name : "Couldn't find it."
+              }",\n    id: "${channel ? channel.id : " "}"\n  },\n  enabled: ${
+                doc ? doc.Enabled : "OFF"
+              }\n};\n\`\`\``
             )
             .setThumbnail()
-            .setColor(client.colours.main)
+            .setColor(client.colors.main)
             .setFooter({
               text: guild.name,
               iconURL: guild.iconURL(),

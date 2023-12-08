@@ -1,7 +1,6 @@
-const chalk = require("chalk");
-const { loadFiles } = require("../functions/loadFiles");
-
 async function events(client) {
+  const { loadFiles } = require("../functions/loadFiles");
+
   await client.events.clear();
 
   const files = await loadFiles("src/events");

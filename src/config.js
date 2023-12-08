@@ -1,19 +1,18 @@
 module.exports = {
   config: {
+    prefix: "$",
     token: process.env["DISCORD_TOKEN"],
+    mongourl: process.env["DATABASE_URL"],
+    serverId: process.env["TEST_SERVER_ID"],
+    botId: process.env["BOT_ID"],
+    ownerId: process.env["OWNER_ID"],
   },
-  colours: {
+  colors: {
     main: "FF8C00",
     error: "FF0000",
     standby: "000000",
     success: "00FF00",
   },
-  bot: {
-    username: "Feather",
-    discraminator: "9414",
-    id: "1134910320121499678",
-  },
-  defaultPrefix: "$",
   emoji: {
     play: "▶️",
     stop: "⏹️",
@@ -21,5 +20,6 @@ module.exports = {
     success: "☑️",
     repeat: "🔁",
     error: "❌",
+    success: "✅",
   },
 };
