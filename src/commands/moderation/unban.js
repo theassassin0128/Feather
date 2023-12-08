@@ -5,7 +5,6 @@ const {
   Client,
   PermissionFlagsBits,
 } = require("discord.js");
-const { colours } = require("../../config.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -19,6 +18,7 @@ module.exports = {
         .setDescription("The id of the member.")
         .setRequired(true)
     ),
+  category: "Moderation",
   /**
    *
    * @param {ChatInputCommandInteraction} interaction

@@ -12,10 +12,10 @@ async function events(client) {
       const execute = (...args) => eventObject.execute(...args, client);
       const target = eventObject.rest ? client.rest : client;
 
+      client.events.set(eventObject.name, execute);
+
       if (eventObject.distube) client.distube.on(eventObject.name, execute);
       else target[eventObject.once ? "once" : "on"](eventObject.name, execute);
-
-      client.events.set(eventObject.name, execute);
     } catch (error) {
       throw error;
     }

@@ -6,7 +6,6 @@ const {
   EmbedBuilder,
 } = require("discord.js");
 const ms = require("ms");
-const { colours } = require("../../config.json");
 const infractions = require("../../schemas/infractions.js");
 
 module.exports = {
@@ -33,6 +32,7 @@ module.exports = {
         .setDescription("Reason for this timeout")
         .setMaxLength(512)
     ),
+  category: "Moderation",
   /**
    *
    * @param {Client} interaction
@@ -40,40 +40,44 @@ module.exports = {
    * @returns
    */
   execute: async (interaction, client) => {
-    const { options, guild, member, user } = interaction;
-    const target = options.getMember("target");
-    const duration = options.getString("duration");
-    const reason = options.getString("reason") || "No reason specified.";
-    const errorsArray = [];
-
-    const errorEmbed = new EmbedBuilder()
-      .setAuthor({ name: "Could not timeout member due to" })
-      .setColor(colours.error);
-
-    if (!target)
-      return interaction.reply({
-        embeds: [
-          errorEmbed.setDescription("Member has most likely left the server."),
-        ],
-        ephemeral: true,
-      });
-
-    if (!ms(duration) || ms(duration) > ms("28d"))
-      errorsArray.push("Time provided is invalid or over the 28d limit.");
-
-    if (!target.moderatable || !target.manageable)
-      errorsArray.push("Selected target is not moderatable by this bot.");
-
-    if (member.roles.highest.position < target.roles.highest.position)
-      errorsArray.push("Selected target has a higher role position than you.");
-
-    if (errorsArray.length)
-      return interaction.reply({
-        embeds: [errorEmbed.setDescription(errorsArray.join("\n"))],
-        ephemeral: true,
-      });
-
     try {
+      const { options, guild, member, user } = interaction;
+      const target = options.getMember("target");
+      const duration = options.getString("duration");
+      const reason = options.getString("reason") || "No reason specified.";
+      const errorsArray = [];
+
+      const errorEmbed = new EmbedBuilder()
+        .setAuthor({ name: "Could not timeout member due to" })
+        .setColor(client.colours.error);
+
+      if (!target)
+        return interaction.reply({
+          embeds: [
+            errorEmbed.setDescription(
+              "Member has most likely left the server."
+            ),
+          ],
+          ephemeral: true,
+        });
+
+      if (!ms(duration) || ms(duration) > ms("28d"))
+        errorsArray.push("Time provided is invalid or over the 28d limit.");
+
+      if (!target.moderatable || !target.manageable)
+        errorsArray.push("Selected target is not moderatable by this bot.");
+
+      if (member.roles.highest.position < target.roles.highest.position)
+        errorsArray.push(
+          "Selected target has a higher role position than you."
+        );
+
+      if (errorsArray.length)
+        return interaction.reply({
+          embeds: [errorEmbed.setDescription(errorsArray.join("\n"))],
+          ephemeral: true,
+        });
+
       await target.timeout(ms(duration), reason);
     } catch (error) {
       interaction.reply({
@@ -111,7 +115,7 @@ module.exports = {
 
     const sEmbed = new EmbedBuilder()
       .setAuthor({ name: "Timeout Issues", iconURL: guild.iconURL() })
-      .setColor(colours.main)
+      .setColor(client.colours.main)
       .setDescription(
         [
           `${target} was issued a timeout for **${ms(ms(duration), {

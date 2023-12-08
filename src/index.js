@@ -1,12 +1,11 @@
 require("dotenv").config();
-const { DISCORD_TOKEN } = process.env;
 const {
   Client,
   Collection,
   GatewayIntentBits,
   Partials,
 } = require("discord.js");
-const config = require("./config.json");
+
 const { events } = require("./handlers/events");
 const { commands } = require("./handlers/commands");
 const { errors } = require("./handlers/errors");
@@ -34,6 +33,12 @@ const client = new Client({
   failIfNotExists: true,
 });
 
+const { config, emoji, colours } = require("./config");
+
+client.config = config;
+client.emotes = emoji;
+client.colours = colours;
+
 client.log = require("./functions/log");
 client.aliases = new Collection();
 client.commands = new Collection();
@@ -41,8 +46,8 @@ client.events = new Collection();
 
 (async () => {
   try {
-    await client.login(DISCORD_TOKEN);
-    errors();
+    await client.login(config.token);
+    errors(process);
     events(client);
     commands(client);
   } catch (error) {

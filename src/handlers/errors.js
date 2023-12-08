@@ -1,4 +1,4 @@
-async function errors(client) {
+async function errors(process) {
   const chalk = require("chalk");
 
   process.on("beforeExit", (code) => {

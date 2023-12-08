@@ -5,7 +5,6 @@ const {
   SlashCommandBuilder,
   PermissionFlagsBits,
 } = require("discord.js");
-const { colours } = require("../../config.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -27,6 +26,7 @@ module.exports = {
         .setDescription("Select a Guild Member.")
         .setRequired(false)
     ),
+  category: "Moderation",
   /**
    *
    * @param {ChatInputCommandInteraction} interaction
@@ -45,7 +45,7 @@ module.exports = {
         iconURL: interaction.user.displayAvatarURL(),
       })
       .setTitle("TASK COMPLETED")
-      .setColor(colours.main)
+      .setColor(client.colours.main)
       .setFooter({
         text: client.user.tag,
         iconURL: client.user.displayAvatarURL(),

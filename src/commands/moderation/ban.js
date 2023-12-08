@@ -5,7 +5,6 @@ const {
   Client,
   PermissionFlagsBits,
 } = require("discord.js");
-const { colours } = require("../../config.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -25,6 +24,7 @@ module.exports = {
         .setDescription("Reason for the ban.")
         .setRequired(false)
     ),
+  category: "Moderation",
   /**
    *
    * @param {ChatInputCommandInteraction} interaction
@@ -33,7 +33,9 @@ module.exports = {
   execute: async (interaction, client) => {
     await interaction.deferReply();
 
-    let errEmbed = new EmbedBuilder().setColor(colours.error).setTitle("ERROR");
+    let errEmbed = new EmbedBuilder()
+      .setColor(client.colours.error)
+      .setTitle("ERROR");
     let errArray = [];
     const { options, guild } = interaction;
     const target = options.getUser("target").id;
@@ -76,7 +78,7 @@ module.exports = {
       .setDescription(
         `${member},\nThis is to notify you that have been banned from ${interaction.guild.name}.\n **Reason**: ${reason}`
       )
-      .setColor(colours.main)
+      .setColor(client.colours.main)
       .setFooter({
         text: interaction.guild.name,
         iconURL: interaction.guild.iconURL(),
@@ -89,7 +91,7 @@ module.exports = {
       .setDescription(
         `Sucessfully banned **${member.user.tag}**\n**Executed By**: ${interaction.user}\n**Reason**: ${reason}`
       )
-      .setColor(colours.main);
+      .setColor(client.colours.main);
     try {
       await member.ban({ reason });
       return interaction.editReply({

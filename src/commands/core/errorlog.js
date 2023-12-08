@@ -7,7 +7,6 @@ const {
   ChannelType,
 } = require("discord.js");
 const errorlog = require("../../schemas/errorlog.js");
-const { colours } = require("../../config.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -63,7 +62,7 @@ module.exports = {
             .setDescription(
               `\`\`\`js\nmodule.exports = {\n  server: ${`{\n    name: "${interaction.guild.name}",\n    id: "${interaction.guild.id}"\n  }`},\n  channel: ${`{\n    name: "${channel.name}",\n    id: "${channel.id}"\n  }`},\n  enabled: true\n};\n\`\`\`\n\nFrom today onward all error logs and messages will be send to ${channel}`
             )
-            .setColor(colours.main)
+            .setColor(client.colours.main)
             .setFooter({
               text: interaction.guild.name,
               iconURL: interaction.guild.iconURL(),
@@ -156,7 +155,7 @@ module.exports = {
               `\`\`\`js\nmodule.exports = {\n  server: {\n    name: "${guild.name}",\n    id: "${guild.id}"\n  },\n  channel: {\n    name: "${channel.name}",\n    id: "${channel.id}"\n  },\n  enabled: ${doc.Enabled}\n};\n\`\`\``
             )
             .setThumbnail()
-            .setColor(colours.main)
+            .setColor(client.colours.main)
             .setFooter({
               text: guild.name,
               iconURL: guild.iconURL(),

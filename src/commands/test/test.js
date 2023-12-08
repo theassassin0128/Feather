@@ -4,7 +4,6 @@ const {
   Client,
   SlashCommandBuilder,
 } = require("discord.js");
-const { colours } = require("../../config.json");
 
 module.exports = {
   data: new SlashCommandBuilder()

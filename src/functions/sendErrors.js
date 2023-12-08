@@ -6,7 +6,7 @@ const { Client, EmbedBuilder } = require("discord.js");
  */
 async function sendErrors(error, client) {
   try {
-    const { colours } = require("../config.json");
+    const { colours } = require("../config.js");
     const errorlog = require("../schemas/errorlog.js");
 
     if (!errorlog) return;

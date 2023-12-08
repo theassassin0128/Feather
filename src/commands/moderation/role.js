@@ -78,6 +78,7 @@ module.exports = {
             )
         )
     ),
+  category: "Moderation",
   /**
    *
    * @param {ChatInputCommandInteraction} interaction

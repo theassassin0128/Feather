@@ -4,13 +4,13 @@ const {
   version,
   ChatInputCommandInteraction,
 } = require("discord.js");
-const { colours } = require("../../config.json");
 const pkg = require("../../../package.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("botinfo")
     .setDescription("Replies with current stats of the bot."),
+  category: "infInformation",
   /**
    *
    * @param {ChatInputCommandInteraction} interaction

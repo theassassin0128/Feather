@@ -6,13 +6,13 @@ const {
   ChannelType,
 } = require("discord.js");
 const moment = require("moment");
-const { colours } = require("../../config.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("serverinfo")
     .setDescription("Replies with server information.")
     .setDMPermission(false),
+  category: "Information",
   /**
    *
    * @param {ChatInputCommandInteraction} interaction
@@ -68,23 +68,23 @@ module.exports = {
         },
         {
           name: "👑 Owned by",
-          value: `${owner} | ${owner.id}`,
+          value: `${owner} | \`${owner.id}\``,
         },
         {
           name: `👥 Members [${guild.memberCount}]`,
-          value: `Humans: ${humans}\nBots: ${bots}`,
+          value: `\`\`\`Humans: ${humans}\nBots: ${bots}\`\`\``,
         },
         {
           name: `💬 Channels [${Channels.size}]`,
-          value: `Text: ${text} | Voice: ${voice}\nStage: ${stage} | Forum: ${forum}\nCategory: ${category} | Anouncment: ${announcement}`,
+          value: `\`\`\`Text: ${text}\nVoice: ${voice}\nStage: ${stage}\nForum: ${forum}\nCategory: ${category}\nAnouncment: ${announcement}\`\`\``,
         },
         {
           name: `🔐 Roles [${Roles.size}]`,
           value: "Use `/roles` to get a list of roles",
         }
       )
-      .setColor(colours.main)
-      .setThumbnail(guild.iconURL());
+      .setColor(client.colours.main)
+      .setImage(guild.iconURL());
 
     interaction.editReply({
       embeds: [server],

@@ -4,13 +4,13 @@ const {
   Client,
   ChatInputCommandInteraction,
 } = require("discord.js");
-const { colours } = require("../../config.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("roles")
     .setDescription("Returns embed(s) with server roles.")
     .setDMPermission(false),
+  category: "Information",
   /**
    *
    * @param {ChatInputCommandInteraction} interaction
@@ -31,7 +31,7 @@ module.exports = {
 
     const rEmbed = new EmbedBuilder()
       .setTitle(`ALL ROLES OF THIS SERVER [${roles.size - 1}]`)
-      .setColor(colours.main)
+      .setColor(client.colours.main)
       .setDescription(`${allRoles.join("\n")}`);
 
     return interaction.reply({
