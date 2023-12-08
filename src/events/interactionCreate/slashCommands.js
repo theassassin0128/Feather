@@ -32,10 +32,18 @@ module.exports = {
 
       await command.execute(interaction, client);
     } catch (error) {
-      interaction.reply({
-        content: `An error occured while executing the command.`,
-        ephemeral: true,
-      });
+      if (interaction.deferred) {
+        interaction.editReply({
+          content: `An error occured while executing the command.`,
+          ephemeral: true,
+        });
+      } else {
+        interaction.reply({
+          content: `An error occured while executing the command.`,
+          ephemeral: true,
+        });
+      }
+
       await sendErrors(error, client);
       throw error;
     }

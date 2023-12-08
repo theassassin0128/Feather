@@ -27,7 +27,7 @@ async function sendErrors(error, client) {
       })
       .setTitle("An Error Occoured")
       .setDescription(`\`\`\`${error}\`\`\``)
-      .setColor(colours.error)
+      .setColor(client.colors.error)
       .setTimestamp();
 
     return channel.send({ embeds: [errorEmbed] });
