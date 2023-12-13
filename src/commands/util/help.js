@@ -6,9 +6,12 @@ const {
   ChatInputCommandInteraction,
   ButtonStyle,
   Client,
+  StringSelectMenuBuilder,
+  StringSelectMenuOptionBuilder,
 } = require("discord.js");
 
 module.exports = {
+  category: "Utility",
   data: new SlashCommandBuilder()
     .setName("help")
     .setDescription("Help with all commands or one specific command."),
@@ -23,7 +26,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setTitle(`${client.user.username} Help`)
       .setDescription(
-        `Hey**<@${interaction.member.user.id}>**, I'm <@${client.user.id}>!\n\nA Discord bot with many awesome features.\n\n\`🎵\`•Music\n\`🗒️\`•Information\n\`💽\`•Playlists\n\`⚙️\`•Config\n\n*Choose an category below button to see commands.*\n\n`
+        `Hey <@${interaction.member.user.id}>, I'm <@${client.user.id}>!\n\nA Discord bot with many awesome features.\n\n🔰 • Moderation\n📩 • Tickets\n⚒ • Utility\n⚙ • Config\n\n*Choose an category below button to see commands.*\n\n`
       )
       .setThumbnail(client.user.displayAvatarURL())
       .setColor(client.colors.main)
@@ -39,24 +42,52 @@ module.exports = {
       .setStyle(ButtonStyle.Success);
 
     let but2 = new ButtonBuilder()
-      .setCustomId("music")
-      .setLabel("Music")
+      .setCustomId("moderation")
+      .setLabel("Moderation")
       .setStyle(ButtonStyle.Primary);
 
     let but3 = new ButtonBuilder()
-      .setCustomId("info")
-      .setLabel("Info")
+      .setCustomId("ticket")
+      .setLabel("Ticket")
       .setStyle(ButtonStyle.Primary);
 
     let but4 = new ButtonBuilder()
-      .setCustomId("playlist")
-      .setLabel("Playlist")
+      .setCustomId("utility")
+      .setLabel("Utility")
       .setStyle(ButtonStyle.Primary);
 
     let but5 = new ButtonBuilder()
       .setCustomId("config")
       .setLabel("Config")
       .setStyle(ButtonStyle.Primary);
+
+    let select = new StringSelectMenuBuilder()
+      .setCustomId("selectMenu")
+      .setPlaceholder("Select a command category.")
+      .setMaxValues(1)
+      .setMinValues(1)
+      .addOptions(
+        new StringSelectMenuOptionBuilder()
+          .setLabel("Home")
+          .setDescription("Home commands.")
+          .setValue("home"),
+        new StringSelectMenuOptionBuilder()
+          .setLabel("Moderation")
+          .setDescription("Moderation commands.")
+          .setValue("moderation"),
+        new StringSelectMenuOptionBuilder()
+          .setLabel("Ticket")
+          .setDescription("Ticket commands.")
+          .setValue("Ticket"),
+        new StringSelectMenuOptionBuilder()
+          .setLabel("Utility")
+          .setDescription("Utility commands")
+          .setValue("utility"),
+        new StringSelectMenuOptionBuilder()
+          .setLabel("Config")
+          .setDescription("Config commands")
+          .setValue("config")
+      );
 
     let commands;
     let editEmbed = new EmbedBuilder();
@@ -65,6 +96,7 @@ module.exports = {
       embeds: [embed],
       components: [
         new ActionRowBuilder().addComponents(but1, but2, but3, but4, but5),
+        new ActionRowBuilder().addComponents(select),
       ],
     });
 
@@ -94,6 +126,7 @@ module.exports = {
               but4.setDisabled(true),
               but5.setDisabled(true)
             ),
+            new ActionRowBuilder().addComponents(select.setDisabled(true)),
           ],
         });
       } catch (error) {
@@ -108,72 +141,98 @@ module.exports = {
         return await interaction.editReply({
           embeds: [embed],
           components: [
-            new ActionRowBuilder().addComponents(but1, but2, but3, but4, but5),
+            new ActionRowBuilder().addComponents(
+              but1.setDisabled(true),
+              but2.setDisabled(false),
+              but3.setDisabled(false),
+              but4.setDisabled(false),
+              but5.setDisabled(false)
+            ),
           ],
         });
       }
 
-      if (b.customId === "music") {
+      if (b.customId === "moderation") {
         commands = client.commands
-          .filter((x) => x.category && x.category === "Music")
-          .map((x) => `\`${x.name}\``);
-        editEmbed
-          .setColor(client.colors.main)
-          .setDescription(commands.join(", "))
-          .setTitle("Music Commands")
-          .setFooter({ text: `Total ${commands.length} music commands.` });
-
-        return await interaction.editReply({
-          embeds: [editEmbed],
-          components: [
-            new ActionRowBuilder().addComponents(but1, but2, but3, but4, but5),
-          ],
-        });
-      }
-
-      if (b.customId == "info") {
-        commands = client.commands
-          .filter((x) => x.category && x.category === "Information")
+          .filter((x) => x.category && x.category === "Moderation")
           .map((x) => `\`${x.data.name}\``);
-
         editEmbed
           .setColor(client.colors.main)
           .setDescription(commands.join(", "))
-          .setTitle("Information Commands")
+          .setTitle("Moderation Commands")
           .setFooter({
-            text: `Total ${commands.length} information commands.`,
+            text: `Total ${commands.length} Mopderation commands.`,
           });
 
         return await interaction.editReply({
           embeds: [editEmbed],
           components: [
-            new ActionRowBuilder().addComponents(but1, but2, but3, but4, but5),
+            new ActionRowBuilder().addComponents(
+              but1.setDisabled(false),
+              but2.setDisabled(true),
+              but3.setDisabled(false),
+              but4.setDisabled(false),
+              but5.setDisabled(false)
+            ),
           ],
         });
       }
 
-      if (b.customId == "playlist") {
+      if (b.customId == "ticket") {
         commands = client.commands
-          .filter((x) => x.category && x.category === "Playlist")
-          .map((x) => `\`${x.name}\``);
+          .filter((x) => x.category && x.category === "Ticket")
+          .map((x) => `\`${x.data.name}\``);
 
         editEmbed
           .setColor(client.colors.main)
           .setDescription(commands.join(", "))
-          .setTitle("Playlist Commands")
-          .setFooter({ text: `Total ${commands.length} playlist commands.` });
+          .setTitle("Ticket Commands")
+          .setFooter({
+            text: `Total ${commands.length} ticket commands.`,
+          });
 
         return await interaction.editReply({
           embeds: [editEmbed],
           components: [
-            new ActionRowBuilder().addComponents(but1, but2, but3, but4, but5),
+            new ActionRowBuilder().addComponents(
+              but1.setDisabled(false),
+              but2.setDisabled(false),
+              but3.setDisabled(true),
+              but4.setDisabled(false),
+              but5.setDisabled(false)
+            ),
+          ],
+        });
+      }
+
+      if (b.customId == "utility") {
+        commands = client.commands
+          .filter((x) => x.category && x.category === "Utility")
+          .map((x) => `\`${x.data.name}\``);
+
+        editEmbed
+          .setColor(client.colors.main)
+          .setDescription(commands.join(", "))
+          .setTitle("Utility Commands")
+          .setFooter({ text: `Total ${commands.length} Utility commands.` });
+
+        return await interaction.editReply({
+          embeds: [editEmbed],
+          components: [
+            new ActionRowBuilder().addComponents(
+              but1.setDisabled(false),
+              but2.setDisabled(false),
+              but3.setDisabled(false),
+              but4.setDisabled(true),
+              but5.setDisabled(false)
+            ),
           ],
         });
       }
       if (b.customId == "config") {
         commands = client.commands
           .filter((x) => x.category && x.category === "Config")
-          .map((x) => `\`${x.name}\``);
+          .map((x) => `\`${x.data.name}\``);
 
         editEmbed
           .setColor(client.colors.main)
@@ -184,7 +243,13 @@ module.exports = {
         return await interaction.editReply({
           embeds: [editEmbed],
           components: [
-            new ActionRowBuilder().addComponents(but1, but2, but3, but4, but5),
+            new ActionRowBuilder().addComponents(
+              but1.setDisabled(false),
+              but2.setDisabled(false),
+              but3.setDisabled(false),
+              but4.setDisabled(false),
+              but5.setDisabled(true)
+            ),
           ],
         });
       }

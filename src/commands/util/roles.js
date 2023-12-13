@@ -78,14 +78,13 @@ module.exports = {
           return false;
         }
       },
-      time: 10000,
-      idle: 10000 / 2,
+      time: 60000,
+      idle: 60000 / 2,
     });
 
     collector.on("end", async () => {
       try {
         await interaction.editReply({
-          embeds: [embed],
           components: [
             new ActionRowBuilder().addComponents(button1.setDisabled(true)),
           ],

@@ -9,6 +9,7 @@ const {
 const errorlog = require("../../schemas/errorlog.js");
 
 module.exports = {
+  category: "Config",
   data: new SlashCommandBuilder()
     .setName("errorlog")
     .setDescription("Setup the Error logging channel.")
