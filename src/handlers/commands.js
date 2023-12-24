@@ -6,6 +6,7 @@ async function commands(client) {
   await client.commands.clear();
   const applicationGuildCommands = new Array();
 
+  const commandsArray = [];
   const files = await loadFiles("src/commands");
 
   for (const file of files) {
@@ -22,8 +23,16 @@ async function commands(client) {
 
       if (commandObject.execute)
         applicationGuildCommands.push(commandObject.data);
+
+      commandsArray.push({
+        FILES: file.split("/").pop(),
+        STATUS: "✅",
+      });
     } catch (error) {
-      throw error;
+      commandsArray.push({
+        FILES: file.split("/").pop(),
+        STATUS: `❌ | ${error}`,
+      });
     }
   }
 
@@ -37,6 +46,7 @@ async function commands(client) {
     }
   );
 
+  console.table(commandsArray, ["FILES", "STATUS"]);
   client.log("loaded commands", "log");
 }
 

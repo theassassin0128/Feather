@@ -3,6 +3,7 @@ async function events(client) {
 
   await client.events.clear();
 
+  const eventsArray = [];
   const files = await loadFiles("src/events");
 
   for (const file of files) {
@@ -15,11 +16,20 @@ async function events(client) {
 
       if (eventObject.distube) client.distube.on(eventObject.name, execute);
       else target[eventObject.once ? "once" : "on"](eventObject.name, execute);
+
+      eventsArray.push({
+        FILES: file.split("/").pop(),
+        STATUS: "✅",
+      });
     } catch (error) {
-      throw error;
+      eventsArray.push({
+        FILES: file.split("/").pop(),
+        STATUS: `❌ | ${error}`,
+      });
     }
   }
 
+  console.table(eventsArray, ["FILES", "STATUS"]);
   return client.log("loaded events", "log");
 }
 

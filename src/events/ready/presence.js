@@ -1,4 +1,5 @@
 const { ActivityType, Client, Guild } = require("discord.js");
+const { getMemberCount } = require("../../functions/memberCount.js");
 
 module.exports = {
   name: "ready",
@@ -38,13 +39,3 @@ module.exports = {
     }, 10 * 60 * 1000);
   },
 };
-
-async function getMemberCount(client) {
-  let memberCount = 0;
-
-  client.guilds.cache.forEach((guild) => {
-    memberCount += guild.memberCount;
-  });
-
-  return memberCount;
-}
