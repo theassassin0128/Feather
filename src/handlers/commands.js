@@ -2,11 +2,12 @@ async function commands(client) {
   const { REST, Routes } = require("discord.js");
   const rest = new REST({ version: "10" }).setToken(client.config.token);
   const { loadFiles } = require("../functions/loadFiles");
+  const ascii = require("ascii-table");
 
   await client.commands.clear();
   const applicationGuildCommands = new Array();
 
-  const commandsArray = [];
+  const table = new ascii("COMMANDS").setHeading("FILES", "STATUS");
   const files = await loadFiles("src/commands");
 
   for (const file of files) {
@@ -24,15 +25,9 @@ async function commands(client) {
       if (commandObject.execute)
         applicationGuildCommands.push(commandObject.data);
 
-      commandsArray.push({
-        FILES: file.split("/").pop(),
-        STATUS: "✅",
-      });
+      table.addRow(file.split("\\").pop(), "✔");
     } catch (error) {
-      commandsArray.push({
-        FILES: file.split("/").pop(),
-        STATUS: `❌ | ${error}`,
-      });
+      table.addRow(file.split("\\").pop(), `❌ | ${file}`);
     }
   }
 
@@ -46,7 +41,7 @@ async function commands(client) {
     }
   );
 
-  console.table(commandsArray, ["FILES", "STATUS"]);
+  console.log(table.toString());
   client.log("loaded commands", "log");
 }
 
