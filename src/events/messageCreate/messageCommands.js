@@ -12,7 +12,7 @@ module.exports = {
    */
   execute: async (message, client) => {
     try {
-      var default_prefix = client.config.defaultPrefix;
+      var default_prefix = client.config.prefix;
 
       if (message.author.bot || !message.guild) return;
       if (!message.content.startsWith(default_prefix)) return;
@@ -27,7 +27,9 @@ module.exports = {
 
       if (cmd.length === 0) return;
 
-      var command = client.commands.get(cmd);
+      let command =
+        client.commands.get(cmd) ||
+        client.commands.get(client.aliases.get(cmd));
 
       if (!command)
         return message.reply(`:x: | There is no command name ${cmd}`);

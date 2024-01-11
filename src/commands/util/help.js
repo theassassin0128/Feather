@@ -26,7 +26,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setTitle(`${client.user.username} Help`)
       .setDescription(
-        `Hey <@${interaction.member.user.id}>, I'm <@${client.user.id}>!\n\nA Discord bot with many awesome features.\n\n🔰 • Moderation\n📩 • Tickets\n⚒ • Utility\n⚙ • Config\n\n*Choose an category below button to see commands.*\n\n`
+        `Hey <@${interaction.member.user.id}>, I'm <@${client.user.id}>!\n\nA Discord bot with many awesome features.\n\n🔰 • Moderation\n📩 • Tickets\n⚒ • Utility\n⚙ • Config\n\n*Choose an category below to see commands.*\n\n`
       )
       .setThumbnail(client.user.displayAvatarURL())
       .setColor(client.colors.main)
@@ -143,11 +143,12 @@ module.exports = {
           components: [
             new ActionRowBuilder().addComponents(
               but1.setDisabled(true),
-              but2.setDisabled(false),
-              but3.setDisabled(false),
-              but4.setDisabled(false),
-              but5.setDisabled(false)
+              but2,
+              but3,
+              but4,
+              but5
             ),
+            new ActionRowBuilder().addComponents(select),
           ],
         });
       }
@@ -168,12 +169,13 @@ module.exports = {
           embeds: [editEmbed],
           components: [
             new ActionRowBuilder().addComponents(
-              but1.setDisabled(false),
+              but1,
               but2.setDisabled(true),
-              but3.setDisabled(false),
-              but4.setDisabled(false),
-              but5.setDisabled(false)
+              but3,
+              but4,
+              but5
             ),
+            new ActionRowBuilder().addComponents(select),
           ],
         });
       }
@@ -201,6 +203,7 @@ module.exports = {
               but4.setDisabled(false),
               but5.setDisabled(false)
             ),
+            new ActionRowBuilder().addComponents(select),
           ],
         });
       }
@@ -220,12 +223,13 @@ module.exports = {
           embeds: [editEmbed],
           components: [
             new ActionRowBuilder().addComponents(
-              but1.setDisabled(false),
-              but2.setDisabled(false),
-              but3.setDisabled(false),
+              but1,
+              but2,
+              but3,
               but4.setDisabled(true),
-              but5.setDisabled(false)
+              but5
             ),
+            new ActionRowBuilder().addComponents(select),
           ],
         });
       }
@@ -244,12 +248,13 @@ module.exports = {
           embeds: [editEmbed],
           components: [
             new ActionRowBuilder().addComponents(
-              but1.setDisabled(false),
-              but2.setDisabled(false),
-              but3.setDisabled(false),
-              but4.setDisabled(false),
+              but1,
+              but2,
+              but3,
+              but4,
               but5.setDisabled(true)
             ),
+            new ActionRowBuilder().addComponents(select),
           ],
         });
       }
