@@ -4,7 +4,9 @@ async function events(client) {
 
   await client.events.clear();
 
-  const table = new ascii("EVENTS").setHeading("FILES", "STATUS");
+  const table = new ascii("EVENTS")
+    .setBorder("│", "─", " ", " ")
+    .setHeading("FILES", "STATUS");
   const files = await loadFiles("src/events");
 
   for (const file of files) {

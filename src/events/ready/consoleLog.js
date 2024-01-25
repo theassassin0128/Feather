@@ -11,7 +11,9 @@ module.exports = {
   execute: async (client) => {
     const { getMemberCount } = require("../../functions/memberCount.js");
     const ascii = require("ascii-table");
-    const table = new ascii("BOT INFO").setHeading("ITEMS", "VALUES");
+    const table = new ascii("BOT INFO");
+    table.setBorder("│", "─", " ", " ");
+    table.setHeading("ITEMS", "VALUES");
 
     table.addRow("Username", client.user.username);
     table.addRow("Tag", client.user.tag);

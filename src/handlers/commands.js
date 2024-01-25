@@ -7,7 +7,9 @@ async function commands(client) {
   await client.commands.clear();
   const applicationGuildCommands = new Array();
 
-  const table = new ascii("COMMANDS").setHeading("FILES", "STATUS");
+  const table = new ascii("COMMANDS")
+    .setBorder("│", "─", " ", " ")
+    .setHeading("FILES", "STATUS");
   const files = await loadFiles("src/commands");
 
   for (const file of files) {
